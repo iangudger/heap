@@ -57,12 +57,14 @@ func (h *Heap[T]) PushElement(e T) {
 
 // MustPopElement removes and returns the min element in the heap. It panics if no elements are in the heap.
 func (h *Heap[T]) MustPopElement() T {
-	v := (*h)[0]
-	(*h)[0] = (*h)[len(*h)-1]
+	e := (*h)[0]
+	i := h.Len() - 1
+	(*h)[0] = (*h)[i]
 	var zero T
-	(*h)[len(*h)-1] = zero
-	*h = (*h)[:len(*h)-1]
-	return v
+	(*h)[i] = zero
+	*h = (*h)[:i]
+	heap.Fix(h, 0)
+	return e
 }
 
 // PopElement removes and returns the min element in the heap.
