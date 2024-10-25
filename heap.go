@@ -106,6 +106,11 @@ func (h *Heap[T]) PeekElement() (T, bool) {
 
 // RemoveElement removes and returns the element at index i from the heap.
 func (h *Heap[T]) RemoveElement(i int) T {
-	h.Swap(i, h.Len()-1)
-	return h.MustPopElement()
+	last := h.Len() - 1
+	h.Swap(i, last)
+	e := (*h)[last]
+	*h = (*h)[:last]
+	h.Fix(i)
+
+	return e
 }
